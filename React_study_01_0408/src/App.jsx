@@ -4,6 +4,8 @@ import './components/Example';
 import ExpenseItem from './components/expenses/ExpenseItem';
 // @ts-ignore
 import NewExpense from './components/newExpense/NewExpense';
+import ExpenseFilter from './components/expenses/ExpenseFilter';
+import Card from './UI/Card';
 
 function App() {
   /*
@@ -23,12 +25,23 @@ function App() {
 
   const expenses = [
     { id: 1, title: '냠냠치킨', price: 19000, date: new Date(2023, 6, 19) },
-    { id: 2, title: '양파', price: 5000, date: new Date(2023, 6, 20) },
+    { id: 2, title: '양파', price: 5000, date: new Date(2022, 5, 20) },
+    { id: 3, title: '도미노피자', price: 35000, date: new Date(2021, 3, 21) },
+    { id: 4, title: '마라탕후루', price: 18000, date: new Date(2024, 11, 13) },
   ];
 
   // 지출 객체 배열을 상태 변수로 관리하기
   // 변화가 생기면 리렌더링을 하기 위해서
   const [expenseList, setExpenseList] = useState(expenses);
+
+  // 선택된 연도값 상태 관리 (현재 시각을 초기값)
+  // 연도가 바뀌면 렌더링을 다시 되게 하기 위해서
+  const [filterdYear, setFilteredYear] = useState(
+    new Date().getFullYear().toString(),
+  );
+
+  // 자식 컴포넌트인 ExpenseFilter에 내려줄 함수
+  const filterChangeHandler = (selectedYear) => {};
 
   // 자식 컴포넌트의 데이터를 부모 컴포넌트에서 받아내는 함수
   // props drilling
@@ -41,7 +54,8 @@ function App() {
   return (
     <>
       <NewExpense onAddExpense={addExpenseHandler} />
-      <div className='expenses'>
+      <Card className='expenses'>
+        <ExpenseFilter onChangeFilter={filterChangeHandler} />
         {expenseList.map((r) => (
           <ExpenseItem
             key={r.id} // 반복문을 통해 같은 컴포넌트를 표현할 때, 각각을 구분할 수 있게
@@ -50,7 +64,7 @@ function App() {
             date={r.date}
           />
         ))}
-      </div>
+      </Card>
     </>
   );
 }
