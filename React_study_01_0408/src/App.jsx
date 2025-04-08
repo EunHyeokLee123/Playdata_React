@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import './components/Example';
 import ExpenseItem from './components/expenses/ExpenseItem';
+// @ts-ignore
+import NewExpense from './components/newExpense/NewExpense';
 
 function App() {
   /*
@@ -22,14 +24,25 @@ function App() {
   const expenses = [
     { id: 1, title: '냠냠치킨', price: 19000, date: new Date(2023, 6, 19) },
     { id: 2, title: '양파', price: 5000, date: new Date(2023, 6, 20) },
-    { id: 3, title: '포도', price: 20000, date: new Date(2023, 6, 21) },
-    { id: 4, title: '오렌지', price: 15000, date: new Date(2023, 6, 22) },
   ];
+
+  // 지출 객체 배열을 상태 변수로 관리하기
+  // 변화가 생기면 리렌더링을 하기 위해서
+  const [expenseList, setExpenseList] = useState(expenses);
+
+  // 자식 컴포넌트의 데이터를 부모 컴포넌트에서 받아내는 함수
+  // props drilling
+  const addExpenseHandler = (newEx) => {
+    const modiEx = { id: expenseList[expenseList.length - 1].id + 1, ...newEx };
+    // 기존 expenseList에 modiEx를 추가, setter를 통해서 변경해야 변화감지
+    setExpenseList([...expenseList, modiEx]);
+  };
 
   return (
     <>
+      <NewExpense onAddExpense={addExpenseHandler} />
       <div className='expenses'>
-        {expenses.map((r) => (
+        {expenseList.map((r) => (
           <ExpenseItem
             key={r.id} // 반복문을 통해 같은 컴포넌트를 표현할 때, 각각을 구분할 수 있게
             title={r.title} // 해주는 props의 값값
