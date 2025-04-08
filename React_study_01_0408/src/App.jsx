@@ -28,14 +28,16 @@ function App() {
 
   return (
     <>
-      {expenses.map((r) => (
-        <ExpenseItem
-          key={r.id} // 반복문을 통해 같은 컴포넌트를 표현할 때, 각각을 구분할 수 있게
-          title={r.title} // 해주는 props의 값값
-          price={r.price}
-          date={r.date}
-        />
-      ))}
+      <div className='expenses'>
+        {expenses.map((r) => (
+          <ExpenseItem
+            key={r.id} // 반복문을 통해 같은 컴포넌트를 표현할 때, 각각을 구분할 수 있게
+            title={r.title} // 해주는 props의 값값
+            price={r.price}
+            date={r.date}
+          />
+        ))}
+      </div>
     </>
   );
 }
