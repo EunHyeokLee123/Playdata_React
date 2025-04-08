@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import './components/Example';
+import ExpenseItem from './components/expenses/ExpenseItem';
 
 function App() {
   /*
@@ -17,14 +19,23 @@ function App() {
 
   // const $h1 = React.createElement('h1', null,'안뇽 React');
 
-  const subject = 'Vanilla JavaScript';
+  const expenses = [
+    { id: 1, title: '냠냠치킨', price: 19000, date: new Date(2023, 6, 19) },
+    { id: 2, title: '양파', price: 5000, date: new Date(2023, 6, 20) },
+    { id: 3, title: '포도', price: 20000, date: new Date(2023, 6, 21) },
+    { id: 4, title: '오렌지', price: 15000, date: new Date(2023, 6, 22) },
+  ];
 
   return (
     <>
-      <h1 className='title'>Hello ~~ {subject}</h1>
-      <h2>리액트 박스 시작~</h2>
-      <label htmlFor='username'>이름</label>
-      <input type='text' id='username' />
+      {expenses.map((r) => (
+        <ExpenseItem
+          key={r.id} // 반복문을 통해 같은 컴포넌트를 표현할 때, 각각을 구분할 수 있게
+          title={r.title} // 해주는 props의 값값
+          price={r.price}
+          date={r.date}
+        />
+      ))}
     </>
   );
 }
