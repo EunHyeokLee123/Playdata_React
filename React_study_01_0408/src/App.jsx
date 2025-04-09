@@ -34,14 +34,17 @@ function App() {
   // 변화가 생기면 리렌더링을 하기 위해서
   const [expenseList, setExpenseList] = useState(expenses);
 
-  // 선택된 연도값 상태 관리 (현재 시각을 초기값)
+  // 선택된 연도값 상태 관리 (현재 연도를 초기값)
   // 연도가 바뀌면 렌더링을 다시 되게 하기 위해서
   const [filterdYear, setFilteredYear] = useState(
     new Date().getFullYear().toString(),
   );
 
   // 자식 컴포넌트인 ExpenseFilter에 내려줄 함수
-  const filterChangeHandler = (selectedYear) => {};
+  // 매개값으로 ExpenseFilter에서 선택된 연도를 받음.
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear); // 사용자가 선택한 연도로 상태를 변경
+  };
 
   // 자식 컴포넌트의 데이터를 부모 컴포넌트에서 받아내는 함수
   // props drilling
@@ -51,19 +54,35 @@ function App() {
     setExpenseList([...expenseList, modiEx]);
   };
 
+  // 고차함수 filter를 따로 분리 -> 필터링 결과가 비었을 경우 없다고
+  // 얘기하기 위해서
+  const filteredItem = expenseList.filter(
+    (r) => r.date.getFullYear().toString() === filterdYear,
+  );
+
+  // 조건부 렌더링을 위한 변수 -> 기본값으로 없다고 깔아놓음.
+  // 변수에 p태그를 넣음.
+  let expenseContent = <p>아직 등록된 지출이 없습니다.</p>;
+
+  // 혹시 필터링 된 결과가 하나라도 존재한다면?
+  // 필터링된 결과를 ExpenseItem으로 맵핑하자.
+  if (filteredItem.length > 0) {
+    expenseContent = filteredItem.map((r) => (
+      <ExpenseItem
+        key={r.id} // 반복문을 통해 같은 컴포넌트를 표현할 때, 각각을 구분할 수 있게
+        title={r.title} // 해주는 props의 값값
+        price={r.price}
+        date={r.date}
+      />
+    ));
+  }
+
   return (
     <>
       <NewExpense onAddExpense={addExpenseHandler} />
       <Card className='expenses'>
         <ExpenseFilter onChangeFilter={filterChangeHandler} />
-        {expenseList.map((r) => (
-          <ExpenseItem
-            key={r.id} // 반복문을 통해 같은 컴포넌트를 표현할 때, 각각을 구분할 수 있게
-            title={r.title} // 해주는 props의 값값
-            price={r.price}
-            date={r.date}
-          />
-        ))}
+        {expenseContent}
       </Card>
     </>
   );

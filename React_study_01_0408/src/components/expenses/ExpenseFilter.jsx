@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ExpenseFilter.css';
 
-const ExpenseFilter = (onChangeFilter) => {
+const ExpenseFilter = ({ onChangeFilter }) => {
   const dropdownChangeHandler = (e) => {
     // 선택된 연도를 필터링할 곳으로 보내야 함. -> App.jsx -> 부모
     // 부모로부터 함수를 전달받아야 함.
