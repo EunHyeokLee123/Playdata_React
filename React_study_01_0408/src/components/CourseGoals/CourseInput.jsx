@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import './CourseInput.css';
+// import하는 이름은 커스텀가능
+// @ts-ignore
+import styles from './CourseInput.module.css';
 import Button from '../../UI/Button';
 
 const CourseInput = ({ onAdd }) => {
+  // module.css를 사용하면 css 내에서 사용한 클래스 이름을
+  // 객체화해서 전달함.
+  // css 모듈화의 장점: 여러 css 파일에 있는 클래스 이름 충돌을
+  // 더이상 걱정하지 않아도 됨.
+  // 변수명으로 파일을 구분하기 때문에 이름 짓는 것에 중복걱정을 하지 않아도 됨
+  // style의 출처를 쉽게 파악할 수 있는 장점이 있음.
+  const { 'form-control': formControl, invalid } = styles;
+
   // 입력창 상태 변수
   const [enteredText, setEnteredText] = useState('');
 
@@ -47,7 +57,7 @@ const CourseInput = ({ onAdd }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={`form-control ${isValid ? '' : 'invalid'}`}>
+      <div className={`${formControl} ${isValid ? '' : invalid}`}>
         <label>나의 목표</label>
         <input type='text' value={enteredText} onChange={handleInput} />
       </div>
