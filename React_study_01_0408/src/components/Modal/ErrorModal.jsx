@@ -8,8 +8,8 @@ import Button from '../../UI/Button';
 import ReactDom from 'react-dom';
 
 // 모달 창을 띄울 때 알림창에 포커스를 주도록 뒷배경을 어둡게 만드는 용도
-const BackDrop = () => {
-  return <div className={styles.backdrop} />;
+const BackDrop = ({ onConfirm }) => {
+  return <div className={styles.backdrop} onClick={onConfirm} />;
 };
 
 // 알림 메세지 창
@@ -39,7 +39,7 @@ const ErrorModal = ({ title, message, onConfirm }) => {
       컴포넌트가 어느 구조에서 호출 되는지는 신경쓰지 않고,
       createPortal 함수에서 지정한 위치에 무조건 렌더링 되는 것을 보장합니다.  */}
       {ReactDom.createPortal(
-        <BackDrop />,
+        <BackDrop onConfirm={onConfirm} />,
         document.getElementById('backdrop-root'),
       )}
       {ReactDom.createPortal(
