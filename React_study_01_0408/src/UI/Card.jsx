@@ -1,5 +1,5 @@
 import React from 'react';
-import './Card.css';
+import styles from './Card.module.css';
 
 /* 
 props: 자식 컴포넌트에게 전달할 데이터
@@ -11,8 +11,7 @@ Card는 전달받은 children을 .card가 적용된 div로 감싸서 렌더링 �
 
 // Card로 감싸진게 props, children으로 부르면 Card로 감싸진 그 안의 요소
 const Card = ({ children, className }) => {
-  const madeClass = 'card ' + className;
-  return <div className={madeClass}>{children}</div>;
+  return <div className={`${styles.card} ${className}`}>{children}</div>;
 };
 
 export default Card;
