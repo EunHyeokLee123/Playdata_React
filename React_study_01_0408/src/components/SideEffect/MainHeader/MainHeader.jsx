@@ -3,11 +3,11 @@ import Navigation from '../Navigation/Navigation';
 // @ts-ignore
 import classes from './MainHeader.module.css';
 
-const MainHeader = ({ isLoginValid, onLogOut }) => {
+const MainHeader = ({ onLogOut }) => {
   return (
     <header className={classes['main-header']}>
       <h1>A Typical Page</h1>
-      <Navigation isLoginValid={isLoginValid} onLogOut={onLogOut} />
+      <Navigation onLogOut={onLogOut} />
     </header>
   );
 };
