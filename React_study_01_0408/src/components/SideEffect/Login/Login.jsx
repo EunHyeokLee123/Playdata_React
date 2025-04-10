@@ -4,7 +4,7 @@ import Card from '../../../UI/Card';
 import styles from './Login.module.css';
 import Button from '../../../UI/Button';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPW, setEnteredPW] = useState('');
 
@@ -15,6 +15,8 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     console.log('submit이 동작됨!');
+
+    onLogin(enteredEmail, enteredPW);
   };
 
   // 이메일의 입력값이 변경될 때마다 실행한 이벤트 핸들러
