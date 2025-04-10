@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
-import CourseInput from './components/CourseGoals/CourseInput';
-import CourseList from './components/CourseGoals/CourseList';
+import React from 'react';
 // @ts-ignore
 import styles from './App.module.css';
-import AddUsers from './components/Users/AddUsers';
-import UserList from './components/Users/UserList';
-import Card from './UI/Card';
+import MainHeader from './components/SideEffect/MainHeader/MainHeader';
+import Login from './components/SideEffect/Login/Login';
 
 const App = () => {
-  const USER_LIST = [];
-  const [userList, setUserList] = useState(USER_LIST);
-
-  const addUserList = (user) => {
-    setUserList((prev) => [...prev, user]);
-  };
-
   return (
-    <div>
-      <AddUsers addUserList={addUserList} />
-      <UserList userList={userList} />
-    </div>
+    <>
+      <MainHeader />
+      <main>
+        <Login />
+      </main>
+    </>
   );
 };
 
