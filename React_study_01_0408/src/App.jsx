@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CourseInput from './components/CourseGoals/CourseInput';
 import CourseList from './components/CourseGoals/CourseList';
+// @ts-ignore
 import styles from './App.module.css';
 import AddUsers from './components/Users/AddUsers';
 import UserList from './components/Users/UserList';

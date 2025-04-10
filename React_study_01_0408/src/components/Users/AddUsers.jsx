@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+// @ts-ignore
 import styles from './AddUsers.module.css';
 import Card from '../../UI/Card';
 import Button from '../../UI/Button';
@@ -6,10 +7,22 @@ import ErrorModal from '../Modal/ErrorModal';
 
 const AddUsers = ({ addUserList }) => {
   // 상태 변수 선언
-  const [userValue, setUserValue] = useState({
-    userName: '',
-    age: '',
-  });
+  // const [userValue, setUserValue] = useState({
+  //   userName: '',
+  //   age: '',
+  // });
+
+  // useState와 다르게 사용자의 입력을 제어할 수 있는 변수
+  // useRef 훅: 특정 요소를 참조할 수 있게 해주는 기능 (특정 요소를 기억)
+  // useRef로 지목한 요소는 리렌더링 대상에 포함되지 않는다. -> useState와 차이점!!!
+  // 불필요한 리렌더링을 피하고 싶을 때, useState가 아닌 useRef를 사용함
+
+  // useRef는 단순 요소의 특정 속성을 얻고 싶거나, 불필요한
+  // 렌더링을 방지하고 싶을 때 사용함.
+  // 입력값이 변경될 때마다 특정 UI를 수정해야 할때(상태에 따라 리렌더링이 발생)
+  // 는 사용하지 않는 것을 권장
+  const nameInput = useRef();
+  const ageInput = useRef();
 
   // 에러 상태를 관리하는 상태 변수
   const [error, setError] = useState(null);
@@ -22,14 +35,17 @@ const AddUsers = ({ addUserList }) => {
   const userSubmitHandler = (e) => {
     e.preventDefault();
 
-    if (userValue.userName.trim() === '' || userValue.age.trim() === '') {
+    if (
+      nameInput.current.value.trim() === '' ||
+      ageInput.current.value.trim() === ''
+    ) {
       setError({
         title: '유효하지 않은 입력값',
         message: '입력값은 공백이면 안됩니다.',
       });
       return;
     }
-    if (+userValue.age < 1) {
+    if (+ageInput.current.value < 1) {
       setError({
         title: '유효하지 않은 나이의 범위',
         message: '나이는 1이상의 숫자로 입력해야 합니다.',
@@ -37,15 +53,20 @@ const AddUsers = ({ addUserList }) => {
       return;
     }
 
-    addUserList(userValue);
-    setUserValue({ userName: '', age: '' });
+    addUserList({
+      userName: nameInput.current.value,
+      age: ageInput.current.value,
+    });
+    nameInput.current.value = '';
+    ageInput.current.value = '';
   };
-  const userNameChangeHandler = (e) => {
-    setUserValue((prev) => ({ ...prev, userName: e.target.value }));
-  };
-  const ageChangeHandler = (e) => {
-    setUserValue((prev) => ({ ...prev, age: e.target.value }));
-  };
+
+  // const userNameChangeHandler = (e) => {
+  //   setUserValue((prev) => ({ ...prev, userName: e.target.value }));
+  // };
+  // const ageChangeHandler = (e) => {
+  //   setUserValue((prev) => ({ ...prev, age: e.target.value }));
+  // };
 
   return (
     <>
@@ -63,19 +84,9 @@ const AddUsers = ({ addUserList }) => {
       <Card className={styles.input}>
         <form onSubmit={userSubmitHandler}>
           <label htmlFor='username'>이름</label>
-          <input
-            id='username'
-            type='text'
-            onChange={userNameChangeHandler}
-            value={userValue.userName}
-          />
+          <input id='username' type='text' ref={nameInput} />
           <label htmlFor='age'>나이</label>
-          <input
-            id='age'
-            type='number'
-            onChange={ageChangeHandler}
-            value={userValue.age}
-          />
+          <input id='age' type='number' ref={ageInput} />
           <Button type='submit'>가입하기</Button>
         </form>
       </Card>
