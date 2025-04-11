@@ -4,6 +4,7 @@ import React from 'react';
 // 초기 객체는 뭘 담을지에 대한 것을 간단하게 정의.
 export const CartContext = React.createContext({
   items: [],
+  totalPrice: 0,
   addItem: (item) => {},
   removeItem: (id) => {},
 });
