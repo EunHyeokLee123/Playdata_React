@@ -14,6 +14,7 @@ const cartReducer = (state, action) => {
     return {
       items: updateItems,
     };
+  } else if (action.type === 'REMOVE') {
   }
 };
 
@@ -42,6 +43,8 @@ const CartProvider = ({ children }) => {
       });
     },
   };
+
+  console.log(cartState);
 
   return (
     <CartContext.Provider value={cartContextData}>

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-ignore
 import styles from './AvailableMeals.module.scss';
 import MealItem from './MealItem/MealItem';
 import Card from '../../../UI/Card';
