@@ -7,8 +7,24 @@ import { CartContext } from './CartContext';
 const cartReducer = (state, action) => {
   if (action.type === 'ADD') {
     // 기존 상태가 가지고 있는 카트 항목에 새로운 항목을 추가.
-    const updateItems = [...state.items, action.item];
-    console.log('추가된 아이템: ', updateItems);
+    // 기존 카트에 이미 추가된 메뉴인지 아닌지를 판단해야함
+    // 이미 있는 메뉴라면 amount만 최신화
+
+    // 배열 고차 함수 findIndex를 통해 새롭게 추가할 item의 id가
+    // 기존 상품의 id인지를 비교해서 idx를 찾기
+    const idx = state.items.findIndex((prev) => {
+      return action.item.id === prev.id;
+    });
+    const existingItems = [...state.items]; // 기존 배열 복사
+    // idx === -1이면 없는 요소라서 지정 안됨.
+    let updateItems;
+    if (idx === -1) {
+      // 신규 item 추가
+      updateItems = [...state.items, action.item];
+    } else {
+      existingItems[idx].amount += action.item.amount;
+      updateItems = [...existingItems];
+    }
 
     // 선택된 음식의 가격과 총액을 바탕으로 금액을 계산
     const updatePrice =
@@ -20,6 +36,27 @@ const cartReducer = (state, action) => {
       totalPrice: updatePrice,
     };
   } else if (action.type === 'REMOVE') {
+    // 지우려는 아이템의 인덱스 탐색
+    const idx = state.items.findIndex((prev) => {
+      return action.id === prev.id;
+    });
+    const existingItems = [...state.items]; // 기존 배열 복사
+    const updatePrice = state.totalPrice - existingItems[idx].price;
+
+    // 1개만 있는 아이템이면 Cart에서 item 제거
+    if (existingItems[idx].amount === 1) {
+      existingItems.splice(idx, 1);
+    }
+    // 1개 이상 남아있으면 단순히 수량을 줄임
+    else {
+      existingItems[idx].amount--;
+    }
+    // 선택된 음식의 가격과 총액을 바탕으로 금액을 계산
+    // remove는 무조건 하나만 감소됨
+    return {
+      items: existingItems,
+      totalPrice: updatePrice,
+    };
   }
 };
 

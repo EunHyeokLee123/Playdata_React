@@ -16,11 +16,13 @@ const MealItemForm = ({ id, onAddCart }) => {
     e.preventDefault();
     // submit이 발동하면 수량을 부모(MealItem)에게 넘기자
     onAddCart(amount);
+    setAmount(1);
   };
 
   return (
     <form className={styles.form} onSubmit={formSubmitHandler}>
       <Input
+        amt={amount}
         onAddAmount={amountHandler}
         label='수량'
         input={{
